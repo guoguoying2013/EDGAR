@@ -1,0 +1,4 @@
+
+const searchByTicker = async (ticker) => {
+
+}
