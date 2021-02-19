@@ -1,3 +1,5 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,11 +11,14 @@ class App extends React.Component {
     this.state = {
       tradingSymbol: '',
       filings: null,
+      start: 0,
+      end: 40,
       colTitles: ['Filings ', 'Html file', 'Description', 'Filing Date', 'File/File Number'],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getHtml = this.getHtml.bind(this);
+    this.nextForty = this.nextForty.bind(this);
   }
 
   handleChange(e) {
@@ -25,7 +30,7 @@ class App extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol } })
+    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, end: this.state.end } })
       .then(({ data }) => {
         console.log(data);
         this.setState({
@@ -36,6 +41,12 @@ class App extends React.Component {
 
   getHtml(e) {
     e.preventDefault();
+    console.log('e.target.name ', e.target.name);
+    axios.get('/api/htm', { params: { indexUrl: e.target.name } })
+      .then(({ data }) => {
+        console.log(data);
+        window.open(data);
+      });
   }
 
   render() {
@@ -53,17 +64,17 @@ class App extends React.Component {
             <tr key={ele[4]} className="file">
               {ele.map((val, i, arr) => {
                 if (i === 1) {
-                  return (<td><button name={arr[5]} onClick={this.getHtml}>Click to get file</button></td>);
+                  return (<td><button name={arr[5]} onClick={this.getHtml}>Click to view file</button></td>);
                 } if (i === 5) {
                   return '';
-                } else {
-                  return (<td>{val}</td>);
                 }
+                return (<td>{val}</td>);
               })}
             </tr>
           ))}
         </table>
         )}
+        <button onClick={this.nextForty} type="submit">Next 40</button>
       </div>
     );
   }

@@ -20,7 +20,7 @@ app.get('/api/htm', async (req, res) => {
   try {
     const { indexUrl } = req.query;
     const data = await controllers.webScraping.getHtml(indexUrl);
-    res.send(`indexUrl: ${indexUrl}, data: ${data}`);
+    res.send(data);
   } catch (err) {
     res.send(err);
   }
