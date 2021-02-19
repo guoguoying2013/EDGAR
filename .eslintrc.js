@@ -14,6 +14,6 @@ module.exports = {
   rules: {
     'no-tabs': 'off',
     'no-console': 'off',
-    'no-mixed-spaces-and-tabs': 'no-mixed-spaces-and-tabs',
+    'no-mixed-spaces-and-tabs': 'off',
   },
 };

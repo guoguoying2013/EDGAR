@@ -1,8 +1,10 @@
 const express = require('express');
+const path = require('path');
 // const models = require('./models');
 const controllers = require('./controllers');
 
 const app = express();
+app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
 
 app.get('/api/search', async (req, res) => {
   try {
