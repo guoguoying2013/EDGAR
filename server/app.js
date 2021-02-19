@@ -10,7 +10,7 @@ app.get('/api/search', async (req, res) => {
   try {
     const { tradingSymbol } = req.query;
     const data = await controllers.webScraping.searchByTicker(tradingSymbol);
-    res.send(`tradingSymbol: ${tradingSymbol}, data: ${data}`);
+    res.send(data);
   } catch (err) {
     res.send(err);
   }
