@@ -41,11 +41,25 @@ class App extends React.Component {
 
   getHtml(e) {
     e.preventDefault();
-    console.log('e.target.name ', e.target.name);
     axios.get('/api/htm', { params: { indexUrl: e.target.name } })
       .then(({ data }) => {
-        console.log(data);
         window.open(data);
+      });
+  }
+
+  nextForty() {
+    const currentStart = this.state.start;
+    const currentEnd = this.state.end;
+    this.setState({
+      start: currentStart + 40,
+      end: currentEnd + 40,
+    });
+    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, end: this.state.end } })
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({
+          filings: data,
+        });
       });
   }
 
@@ -60,6 +74,13 @@ class App extends React.Component {
         </div>
         {this.state.filings && (
         <table>
+          <tr>
+            <td>Filings</td>
+            <td>File Link</td>
+            <td>Description</td>
+            <td>Filing Date</td>
+            <td>File/File Number</td>
+          </tr>
           {this.state.filings.map((ele) => (
             <tr key={ele[4]} className="file">
               {ele.map((val, i, arr) => {
