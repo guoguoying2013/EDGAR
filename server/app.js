@@ -1,12 +1,27 @@
 const express = require('express');
-const models = require('./models');
+// const models = require('./models');
 const controllers = require('./controllers');
 
 const app = express();
 
 app.get('/api/search', async (req, res) => {
-  const tradingSymbol = req.query.tradingSymbol;
-  res.send(`tradingSymbol: ${tradingSymbol}`);
+  try {
+    const { tradingSymbol } = req.query;
+    const data = await controllers.webScraping.searchByTicker(tradingSymbol);
+    res.send(`tradingSymbol: ${tradingSymbol}, data: ${data}`);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+app.get('/api/htm', async (req, res) => {
+  try {
+    const { indexUrl } = req.query;
+    const data = await controllers.webScraping.getHtml(indexUrl);
+    res.send(`indexUrl: ${indexUrl}, data: ${data}`);
+  } catch (err) {
+    res.send(err);
+  }
 });
 
 module.exports = app;

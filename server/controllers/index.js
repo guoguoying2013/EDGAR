@@ -1,4 +1,3 @@
+const webScraping = require('./webScraping.js');
 
-const searchByTicker = async (ticker) => {
-
-}
+module.exports.webScraping = webScraping;

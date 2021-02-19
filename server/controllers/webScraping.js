@@ -1,0 +1,44 @@
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+// db example https://www.sec.gov/forms
+
+const getHtml = async (url) => {
+  const { data } = await axios.get(url);
+  const $ = cheerio.load(data);
+  let htmLink = $('td a[href^="/Archive"][href$="htm"]').attr('href');
+  htmLink = `https://www.sec.gov${htmLink}`;
+  return htmLink;
+};
+
+const validateTradingSymbol = (tradingSymbol) => {
+  // validate trading symbol
+};
+
+const searchByTicker = async (tradingSymbol) => {
+  try {
+    const { data } = await axios.get(`https://www.sec.gov/cgi-bin/browse-edgar?CIK=${tradingSymbol}&owner=exclude&action=getcompany`);
+    const $ = cheerio.load(data);
+    const filings = [];
+
+    $('table > tbody > tr').each((_idx, el) => {
+      const filing = [];
+      $(el).find('td').each((i, td) => {
+        const txt = $(td).text();
+	    filing.push(txt);
+      });
+      let href = $(el).find('td > a[href^="/Archive"]').attr('href');
+      if (href !== undefined) {
+	    href = `https://www.sec.gov${href}`;
+	    filing.push(href);
+	    filings.push(filing);
+      }
+    });
+    return filings;
+  } catch (err) {
+    return err;
+  }
+};
+
+module.exports.searchByTicker = searchByTicker;
+module.exports.getHtml = getHtml;
