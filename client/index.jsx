@@ -31,16 +31,21 @@ class App extends React.Component {
     e.preventDefault();
     axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, interval: this.state.interval } })
       .then(({ data }) => {
-        console.log(data);
         this.setState({
           filings: data,
         });
       });
   }
 
-  getHtml(e) {
+  getHtml(e, arr) {
     e.preventDefault();
-    axios.get('/api/htm', { params: { indexUrl: e.target.name } })
+    const info = {
+      tradingSymbol: this.state.tradingSymbol,
+      filings: arr[0],
+      description: arr[2],
+      fileDate: arr[3],
+    };
+    axios.get('/api/htm', { params: { indexUrl: arr[5], info } })
       .then(({ data }) => {
         window.open(data);
       });
@@ -50,7 +55,6 @@ class App extends React.Component {
     const currentStart = this.state.start + this.state.interval;
     axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: currentStart, interval: this.state.interval } })
       .then(({ data }) => {
-        console.log(data);
         this.setState({
           filings: data,
           start: currentStart,
@@ -80,7 +84,7 @@ class App extends React.Component {
             <tr key={ele[4]} className="file">
               {ele.map((val, i, arr) => {
                 if (i === 1) {
-                  return (<td><button name={arr[5]} onClick={this.getHtml}>Click to view file</button></td>);
+                  return (<td><button onClick={(e) => {this.getHtml(e, arr);}}>Click to view file</button></td>);
                 } if (i === 5) {
                   return '';
                 }
