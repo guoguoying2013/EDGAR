@@ -1,18 +1,15 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-// db example https://www.sec.gov/forms
-
 const getHtml = async (url) => {
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);
   let htmLink = $('td a[href^="/Archive"][href$="htm"]').attr('href');
+  if (htmLink === undefined) {
+    return null;
+  }
   htmLink = `https://www.sec.gov${htmLink}`;
   return htmLink;
-};
-
-const validateTradingSymbol = (tradingSymbol) => {
-  // validate trading symbol
 };
 
 const searchByTicker = async (tradingSymbol, start, interval) => {
@@ -29,9 +26,9 @@ const searchByTicker = async (tradingSymbol, start, interval) => {
       });
       let href = $(el).find('td > a[href^="/Archive"]').attr('href');
       if (href !== undefined) {
-	    href = `https://www.sec.gov${href}`;
-	    filing.push(href);
-	    filings.push(filing);
+        href = `https://www.sec.gov${href}`;
+        filing.push(href);
+        filings.push(filing);
       }
     });
     return filings;
