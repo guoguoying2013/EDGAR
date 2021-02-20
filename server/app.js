@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-// const models = require('./models');
+const models = require('./models');
 const controllers = require('./controllers');
 
 const app = express();
@@ -26,11 +26,15 @@ app.get('/api/search', async (req, res) => {
 
 app.get('/api/htm', async (req, res) => {
   try {
-    const { indexUrl } = req.query;
+    const { indexUrl, info } = req.query;
+    console.log(info);
     const data = await controllers.webScraping.getHtml(indexUrl);
     if (data === null) {
       res.status(204).send(`Couldn't find a html link at ${indexUrl}`);
     }
+    const record = JSON.parse(info);
+    record.htmlUrl = data;
+    models.enterRecord(record);
     res.status(200).send(data);
   } catch (err) {
     res.status(500).send(err);
