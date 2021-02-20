@@ -15,9 +15,9 @@ const validateTradingSymbol = (tradingSymbol) => {
   // validate trading symbol
 };
 
-const searchByTicker = async (tradingSymbol) => {
+const searchByTicker = async (tradingSymbol, start, interval) => {
   try {
-    const { data } = await axios.get(`https://www.sec.gov/cgi-bin/browse-edgar?CIK=${tradingSymbol}&owner=exclude&action=getcompany`);
+    const { data } = await axios.get(`https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${tradingSymbol}&type=&dateb=&owner=exclude&start=${start}&count=${interval}`);
     const $ = cheerio.load(data);
     const filings = [];
 
