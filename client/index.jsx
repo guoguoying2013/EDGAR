@@ -12,8 +12,7 @@ class App extends React.Component {
       tradingSymbol: '',
       filings: null,
       start: 0,
-      end: 40,
-      colTitles: ['Filings ', 'Html file', 'Description', 'Filing Date', 'File/File Number'],
+      interval: 40,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,7 +29,7 @@ class App extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, end: this.state.end } })
+    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, interval: this.state.interval } })
       .then(({ data }) => {
         console.log(data);
         this.setState({
@@ -48,17 +47,13 @@ class App extends React.Component {
   }
 
   nextForty() {
-    const currentStart = this.state.start;
-    const currentEnd = this.state.end;
-    this.setState({
-      start: currentStart + 40,
-      end: currentEnd + 40,
-    });
-    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: this.state.start, end: this.state.end } })
+    const currentStart = this.state.start + this.state.interval;
+    axios.get('/api/search', { params: { tradingSymbol: this.state.tradingSymbol, start: currentStart, interval: this.state.interval } })
       .then(({ data }) => {
         console.log(data);
         this.setState({
           filings: data,
+          start: currentStart,
         });
       });
   }

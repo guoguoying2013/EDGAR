@@ -8,8 +8,9 @@ app.use('/', express.static(path.resolve(__dirname, '../client/dist')));
 
 app.get('/api/search', async (req, res) => {
   try {
-    const { tradingSymbol } = req.query;
-    const data = await controllers.webScraping.searchByTicker(tradingSymbol);
+    const { tradingSymbol, start, interval } = req.query;
+    console.log(tradingSymbol, start, interval);
+    const data = await controllers.webScraping.searchByTicker(tradingSymbol, start, interval);
     res.send(data);
   } catch (err) {
     res.send(err);
