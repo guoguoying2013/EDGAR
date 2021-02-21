@@ -45,7 +45,7 @@ class App extends React.Component {
       description: arr[2],
       fileDate: arr[3],
     };
-    axios.get('/api/htm', { params: { indexUrl: arr[5], info } })
+    axios.get('/api/html', { params: { indexUrl: arr[5], info } })
       .then(({ data }) => {
         window.open(data);
       });

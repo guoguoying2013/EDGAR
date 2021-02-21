@@ -15,5 +15,6 @@ module.exports = {
     'no-tabs': 'off',
     'no-console': 'off',
     'no-mixed-spaces-and-tabs': 'off',
+    'no-undef': 'off',
   },
 };

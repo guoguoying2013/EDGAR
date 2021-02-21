@@ -29,3 +29,4 @@ const Records = orm.define('records', {
 Records.sync();
 
 module.exports.Records = Records;
+module.exports.orm = orm;

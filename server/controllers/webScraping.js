@@ -2,14 +2,18 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 const getHtml = async (url) => {
-  const { data } = await axios.get(url);
-  const $ = cheerio.load(data);
-  let htmLink = $('td a[href^="/Archive"][href$="htm"]').attr('href');
-  if (htmLink === undefined) {
-    return null;
+  try {
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+    let htmLink = $('td a[href^="/Archive"][href$="htm"]').attr('href');
+    if (htmLink === undefined) {
+      return null;
+    }
+    htmLink = `https://www.sec.gov${htmLink}`;
+    return htmLink;
+  } catch (err) {
+    return err;
   }
-  htmLink = `https://www.sec.gov${htmLink}`;
-  return htmLink;
 };
 
 const searchByTicker = async (tradingSymbol, start, interval) => {
