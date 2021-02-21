@@ -24,7 +24,7 @@ app.get('/api/search', async (req, res) => {
   }
 });
 
-app.get('/api/htm', async (req, res) => {
+app.get('/api/html', async (req, res) => {
   try {
     const { indexUrl, info } = req.query;
     const data = await controllers.webScraping.getHtml(indexUrl);
