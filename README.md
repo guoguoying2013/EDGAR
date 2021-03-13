@@ -36,7 +36,7 @@ This project is to mimic some of the functions of [EDGAR](https://www.sec.gov/ed
    mysql -u username -p password
    CREATE DATABASE sdgar;
    ```
-4. Created webpack bundle
+4. Create webpack bundle
     ```sh
    npm run build
    ```
